@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+body {
+  background-color: #fff;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.round-grid {
+  display: grid;
+  border-radius: 50%;
+  grid-template-columns: 1fr 1fr 4fr 1fr 1fr;
+  grid-template-rows: 1fr 2fr 3fr 3fr 1fr;
+  top: 5px;
+}
+
+.round-grid .colored {
+  grid-row-start: 2;
+  grid-row-end: 4;
+  grid-column-start: 3;
+  grid-column-end: 4;
+  border-radius: 50%;
+}
+
+.round-grid .item {
+  grid-row-start: 3;
+  grid-row-end: 4;
+  grid-column-start: 2;
+  grid-column-end: 5;
+}
+
+.round-grid .ranks {
+  grid-row-start: 4;
+  grid-column-start: 2;
+  grid-column-end: 5;
+}
+
+.responsive-chunk {
+  width: 330px;
+  min-width: 330px;
+  max-width: 330px;
+  height: 330px;
+  min-height: 330px;
+}
+
+svg * {
+  cursor: pointer;
+}
+
+@media (max-width: 1046px) {
+  .round-grid {
+    display: none;
+  }
+}

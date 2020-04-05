@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Pizza! - #MakeoverMonday Week 13, 2020</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", main);
+    </script>
+    <link rel="stylesheet" href="main.css" />
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app" class="flex flex-col items-center">
+      <h1 class="text-5xl leading-none text-center">
+        What belongs on a British pizza?
+      </h1>
+      <h4 class="text-3xl text-gray-700 leading-snug text-center">
+        #MakeoverMonday Week 13, 2020
+      </h4>
+      <span class="mt-4 w-8/12"
+        >For this survey by YouGov, participants were asked the following
+        question:<br />
+        Generally speaking, which of the following toppings do you like on a
+        pizza? Select as many as you like.</span
+      >
+      <div
+        class="w-10/12 h-full flex justify-center items-center flex-wrap my-10"
+      >
+        <div class="mx-1 responsive-chunk text-sm">
+          <svg :width="diffWidth" :height="diffHeight" viewBox="0 0 420 300">
+            <g>
+              <text x="300" text-anchor="end" font-weight="600">
+                PREFERRED BY MALE
+              </text>
+              <g transform="translate(0, 10)">
+                <text
+                  v-for="(topping, index) in maleToppings"
+                  @click="setHighlight(topping)"
+                  :x="300 + 10"
+                  text-anchor="start"
+                  :y="index * (barSpace + barHeight - 3) + 2"
+                  :font-size="barHeight - 3"
+                  alignment-baseline="hanging"
+                >
+                  {{topping.toUpperCase()}}
+                </text>
+                <bar-chart
+                  @highlight="setHighlight"
+                  :start="{x:100, y:0}"
+                  :width="200"
+                  :bar-space="barSpace"
+                  :bar-height="barHeight - 3"
+                  :scale-max="21"
+                  align="right"
+                  :data="malePreference"
+                  :highlighted="highlighted"
+                  default-color="#ef84ff"
+                ></bar-chart>
+              </g>
+            </g>
+            <g transform="translate(0, 200)">
+              <text x="100" font-weight="600">PREFERRED BY FEMALE</text>
+              <g transform="translate(0, 10)">
+                <text
+                  v-for="(topping, index) in femaleToppings"
+                  @mouseover="setHighlight(topping)"
+                  :x="100 - 10"
+                  text-anchor="end"
+                  :y="index * (barSpace + barHeight - 3) + 2"
+                  :font-size="barHeight - 3"
+                  alignment-baseline="hanging"
+                >
+                  {{topping.toUpperCase()}}
+                </text>
+                <bar-chart
+                  @highlight="setHighlight"
+                  :start="{x:100, y:0}"
+                  :width="200"
+                  :bar-space="barSpace"
+                  :bar-height="barHeight - 3"
+                  :scale-max="21"
+                  :data="femalePreference"
+                  :highlighted="highlighted"
+                  default-color="#49e19a"
+                ></bar-chart>
+              </g>
+            </g>
+          </svg>
+          <span class="leading-snug text-xs"
+            >Charts above show preferences of male and female participants,
+            calculated by deducting the percentage of participants from the
+            other group who chose that ingredient. Female participants like
+            vegetables more, while male participants like meats more.</span
+          >
+        </div>
+        <div class="round-grid responsive-chunk mx-1 relative">
+          <div class="item flex justify-center items-center">
+            <span class="text-4xl text-center"
+              >{{highlighted.toUpperCase()}}</span
+            >
+          </div>
+          <div class="ranks flex flex-col relative">
+            <div class="text-center">Popularity</div>
+            <div class="flex justify-around w-full m-2">
+              <div class="w-1/4 h-20 text-center">
+                Overall
+                <br />
+                {{ranks.Total[highlighted]}}
+                <br />
+                <span class="text-gray-500 text-xs"
+                  >{{percents.Total[highlighted]}}%</span
+                >
+              </div>
+              <div class="w-1/4 h-20 text-center">
+                Female
+                <br />
+                {{ranks.Female[highlighted]}}
+                <br />
+                <span class="text-gray-500 text-xs"
+                  >{{percents.Female[highlighted]}}%</span
+                >
+              </div>
+              <div class="w-1/4 h-20 text-center">
+                Male
+                <br />
+                {{ranks.Male[highlighted]}}<br /><span
+                  class="text-gray-500 text-xs"
+                  >{{percents.Male[highlighted]}}%</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="responsive-chunk flex flex-col justify-start mx-1">
+          <h4 class="text-xl mb-1 text-center">
+            Show percentages
+          </h4>
+          <div class="flex justify-around mb-4">
+            <button
+              :class="['bg-gray-200', 'p-1', 'rounded-md', 'outline-none', {'bg-gray-800 text-white': currentPop === 'Total'}]"
+              @click="currentPop='Total'"
+            >
+              Overall
+            </button>
+            <button
+              :class="['bg-gray-200', 'p-1', 'rounded-md', 'outline-none',{'bg-gray-800 text-white': currentPop === 'Female'}]"
+              @click="currentPop='Female'"
+            >
+              Female
+            </button>
+            <button
+              :class="['bg-gray-200', 'p-1', 'rounded-md', 'outline-none',{'bg-gray-800 text-white': currentPop === 'Male'}]"
+              @click="currentPop='Male'"
+            >
+              Male
+            </button>
+          </div>
+          <svg width="320" height="260" viewBox="0 0 400 320">
+            <g transform="translate(160 0)">
+              <text
+                v-for="(topping, index) in popToppings"
+                @click="setHighlight(topping)"
+                :x="0 - 10"
+                text-anchor="end"
+                :y="index * (barSpace + barHeight) + 2"
+                :font-size="barHeight - 2"
+                :font-weight="highlighted === topping ? 500 : 400"
+                :fill="highlighted === topping ? 'black' : 'grey'"
+                alignment-baseline="hanging"
+              >
+                {{topping.toUpperCase()}} {{highlighted === topping ?
+                `#${+index+1}` : ''}}
+              </text>
+              <bar-chart
+                @highlight="setHighlight"
+                :start="{x:0, y:0}"
+                :width="240"
+                :bar-space="barSpace"
+                :bar-height="barHeight"
+                :scale-max="100"
+                :data="popView"
+                :highlighted="highlighted"
+                default-color="#3ee1ec"
+              ></bar-chart>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
