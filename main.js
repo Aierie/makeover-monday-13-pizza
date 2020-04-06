@@ -18,7 +18,7 @@ function main() {
     { Topping: "Pork", Total: 25, Male: 34, Female: 17 },
     { Topping: "Tuna", Total: 22, Male: 23, Female: 21 },
     { Topping: "Anchovies", Total: 18, Male: 21, Female: 15 },
-    { Topping: "Something else", Total: 11, Male: 12, Female: 10 },
+    { Topping: "Other", Total: 11, Male: 12, Female: 10 },
   ];
 
   const config = {
@@ -219,6 +219,17 @@ function main() {
               (res[key][o.Topping] = `${+i + 1}${
                 i === 0 ? "st" : i === 1 ? "nd" : i === 2 ? "rd" : "th"
               }`)
+          )
+        );
+
+        return res;
+      },
+      rankedList() {
+        const res = { Total: [], Male: [], Female: [] };
+
+        ["Total", "Female", "Male"].forEach((key) =>
+          this.sort(this.clone(this.rawData), key).forEach(
+            (o, i) => res[key].push(o.Topping)
           )
         );
 

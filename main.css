@@ -10,7 +10,6 @@ body {
   border-radius: 50%;
   grid-template-columns: 1fr 1fr 4fr 1fr 1fr;
   grid-template-rows: 1fr 2fr 3fr 3fr 1fr;
-  top: 5px;
 }
 
 .round-grid .colored {
@@ -38,8 +37,9 @@ body {
   width: 330px;
   min-width: 330px;
   max-width: 330px;
-  height: 330px;
+  height: auto;
   min-height: 330px;
+  margin-top: 20px;
 }
 
 svg * {
@@ -50,4 +50,9 @@ svg * {
   .round-grid {
     display: none;
   }
+}
+
+
+.chart-header {
+  font-weight: 600;
 }

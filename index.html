@@ -23,13 +23,13 @@
         #MakeoverMonday Week 13, 2020
       </h4>
       <span class="mt-4 w-8/12"
-        >For this survey by YouGov, participants were asked the following
+        >For this <a class="text-blue-500 underline" href="https://yougov.co.uk/topics/politics/articles-reports/2017/03/06/does-pineapple-belong-pizza">survey by YouGov</a>, participants were asked the following
         question:<br />
         Generally speaking, which of the following toppings do you like on a
         pizza? Select as many as you like.</span
       >
       <div
-        class="w-10/12 h-full flex justify-center items-center flex-wrap my-10"
+        class="w-10/12 h-full flex justify-center items-center flex-wrap"
       >
         <div class="mx-1 responsive-chunk text-sm">
           <svg :width="diffWidth" :height="diffHeight" viewBox="0 0 420 300">
@@ -68,7 +68,7 @@
               <g transform="translate(0, 10)">
                 <text
                   v-for="(topping, index) in femaleToppings"
-                  @mouseover="setHighlight(topping)"
+                  @click="setHighlight(topping)"
                   :x="100 - 10"
                   text-anchor="end"
                   :y="index * (barSpace + barHeight - 3) + 2"
@@ -91,10 +91,11 @@
               </g>
             </g>
           </svg>
+          <h4 class="text-xl chart-header">DIFFERENCES IN TASTE</h4>
           <span class="leading-snug text-xs"
             >Charts above show preferences of male and female participants,
             calculated by deducting the percentage of participants from the
-            other group who chose that ingredient. Female participants like
+            other group who chose that ingredient (a score of 21% in "PREFERRED BY MALE" means 21% more male participants chose that option). Female participants like
             vegetables more, while male participants like meats more.</span
           >
         </div>
@@ -136,7 +137,21 @@
             </div>
           </div>
         </div>
-        <div class="responsive-chunk flex flex-col justify-start mx-1">
+        <div class="responsive-chunk flex justify-center text-sm mx-1">
+          <table class="w-auto h-full table m-auto">
+          <tr class="w-auto font-semibold">
+            <td class="border-gray-500 border-2 w-40 bg-gray-200">Rank</td>
+            <td v-for="(list, pop, i) in rankedList" :key="pop" class="border-gray-500 border-2 w-40">{{pop}}</td>
+          </tr>
+          <tr v-for="i in rawData.length" class="w-auto">
+            <td class="border-gray-500 border-2 w-40 bg-gray-200">
+              #{{i}}
+            </td>
+            <td v-for="list in rankedList" @click="highlighted=list[i-1]" :class="['border-gray-500', 'border-2 w-40', 'cursor-pointer', {'bg-blue-300 font-semibold':list[i-1] === highlighted}]">{{list[i - 1]}}</td>
+          </tr>
+          </table>
+        </div>
+        <!-- <div class="responsive-chunk flex flex-col justify-start mx-1">
           <h4 class="text-xl mb-1 text-center">
             Show percentages
           </h4>
@@ -189,7 +204,7 @@
               ></bar-chart>
             </g>
           </svg>
-        </div>
+        </div> -->
       </div>
     </div>
   </body>
